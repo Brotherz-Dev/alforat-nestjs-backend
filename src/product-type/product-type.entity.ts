@@ -29,7 +29,6 @@ export class ProductType extends BaseEntity {
     public lastUpdatedBy: string;
 
 
-    @Exclude()
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     public created_at: Date;
 

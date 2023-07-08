@@ -19,7 +19,7 @@ export class Product extends BaseEntity {
 
     @OneToOne(() => ProductType, (productType) => productType.id)
     @JoinTable()
-    public productTypes: ProductType;
+    public productType: ProductType;
 
     @Column({
         nullable:false,
@@ -60,6 +60,7 @@ export class Product extends BaseEntity {
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     public created_at: Date;
 
+    @Exclude()
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     public updated_at: Date;
 
