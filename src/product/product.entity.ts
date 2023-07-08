@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from "typeorm";
+import { ProductType } from "src/product-type/product-type.entity";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne } from "typeorm";
 
 @Entity("products")
 export class Product extends BaseEntity {
@@ -16,10 +17,9 @@ export class Product extends BaseEntity {
     })
     public name: string;
 
-    @Column({
-        nullable:false
-    })
-    public productType: string;
+    @OneToOne(() => ProductType, (productType) => productType.id)
+    @JoinTable()
+    public productTypes: ProductType;
 
     @Column({
         nullable:false,
@@ -39,8 +39,21 @@ export class Product extends BaseEntity {
     })
     public quantity: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+        default:null
+    })
     public description: string;
+
+    @Column({
+        default : null
+    })
+    public createdBy: string;
+    
+    @Column({
+        default : null
+    })
+    public lastUpdatedBy: string;
 
 
     @Exclude()
@@ -49,8 +62,6 @@ export class Product extends BaseEntity {
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     public updated_at: Date;
-
-
 
 
 }
