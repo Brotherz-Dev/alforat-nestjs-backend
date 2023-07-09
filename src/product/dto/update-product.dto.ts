@@ -1,6 +1,6 @@
 import { Trim } from "class-sanitizer";
 import { Type } from "class-transformer";
-import { isInt, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsArray, isInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { ResponseProductTypeDTO } from "src/product-type/dto/response-product-type.dto";
 
 export class UpdateProductDTO {
@@ -12,6 +12,11 @@ export class UpdateProductDTO {
     @IsNotEmpty({ "message": "BarCode field cannot be empty" })
     @Trim()
     readonly barCode: string;
+
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    readonly keywords: string[];
 
     
     @IsNotEmpty({ "message": "Name field cannot be empty" })

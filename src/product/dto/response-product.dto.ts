@@ -11,6 +11,8 @@ export class ResponseProductDTO {
 
     name: string;
 
+    keywords: string[];
+
     @Type(() => ResponseProductTypeDTO)
     productType: ResponseProductTypeDTO;
 

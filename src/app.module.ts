@@ -25,7 +25,7 @@ const envFilePath: string = getEnvPath(`${__dirname}`);
       envFilePath:'.env',
       isGlobal:true
     }),
-    ThrottlerModule.forRoot({ ttl: 120, limit: 60 }),
+    ThrottlerModule.forRoot({ ttl: 120, limit: 5 }),
     ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService } ),
     UserModule,

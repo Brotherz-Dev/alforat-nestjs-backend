@@ -7,7 +7,8 @@ export class ProductType extends BaseEntity {
     public id: number;
 
     @Column({
-        nullable:false
+        nullable:false,
+        unique : true
     })
     public name: string;
 

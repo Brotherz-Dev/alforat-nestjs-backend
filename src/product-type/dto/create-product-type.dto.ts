@@ -1,5 +1,5 @@
 import { Trim } from "class-sanitizer";
-import { IsEmail, IsNotEmpty, IsNumberString, IsOptional, MaxLength, MinLength} from "class-validator";
+import { IsNotEmpty, IsOptional} from "class-validator";
 
 export class CreateProductTypeDTO {
 

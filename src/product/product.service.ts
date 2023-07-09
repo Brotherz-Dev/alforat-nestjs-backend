@@ -57,6 +57,7 @@ export class ProductService {
     p.quantity = newProduct.quantity;
     p.description = newProduct.description;
     p.lastUpdatedBy = user.username;
+    p.keywords = newProduct.keywords;
     p.createdBy = user.username;
 
     return await this.productRepo.save(p);
@@ -91,6 +92,7 @@ export class ProductService {
     p.description = newProduct.description;
     p.lastUpdatedBy = user.username;
     p.name = newProduct.name;
+    p.keywords = newProduct.keywords;
     p.productType = productType;
 
     return await this.productRepo.save(p);

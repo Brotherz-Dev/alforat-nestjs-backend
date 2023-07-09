@@ -1,4 +1,4 @@
-import { Injectable, Inject, UnauthorizedException, ConflictException, NotFoundException } from "@nestjs/common";
+import { Injectable, Inject, UnauthorizedException, ConflictException, NotFoundException, BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Product } from "src/product/product.entity";
@@ -60,14 +60,19 @@ export class ProductTypeService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    const productType = await this.findOne({
-      where: {
-        id: newProductType.id
+    const d = await this.findOne({
+      where:{
+        name : newProductType.name
       }
     });
-    if (!productType) {
-      throw new NotFoundException('ProductType not found');
+    if(d){
+      throw new ConflictException('Already Found Product type with same name');
     }
+    const productType = await this.checkIfProductTypeExist(newProductType.id);
+    if (!productType) {
+      throw new NotFoundException('Product type not found');
+    }
+    
     productType.name = newProductType.name;
     productType.description = newProductType.description;
     productType.lastUpdatedBy = user.username;
@@ -88,8 +93,5 @@ export class ProductTypeService {
     }
     return p;
   }
-
-
-
 
 }
