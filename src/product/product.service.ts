@@ -2,10 +2,11 @@ import { Injectable, Inject, UnauthorizedException, NotFoundException, ConflictE
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductTypeService } from "src/product-type/product-type.service";
-import { User } from "src/user/user.entity";
 import { UserService } from "src/user/user.service";
 import { Repository } from "typeorm";
 import { CreateProductDTO } from "./dto/create-product.dto";
+import { BarCodeQueryDto } from "./dto/query.product.dto";
+import { ResponseProductDTO } from "./dto/response-product.dto";
 import { UpdateProductDTO } from "./dto/update-product.dto";
 import { Product } from "./product.entity";
 
@@ -26,7 +27,7 @@ export class ProductService {
     return await this.productRepo.save(data);
   }
 
-  async createProduct(userId: number, newProduct: CreateProductDTO) : Promise<Product | undefined> {
+  async createProduct(userId: number, newProduct: CreateProductDTO) : Promise<ResponseProductDTO | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId
@@ -62,7 +63,8 @@ export class ProductService {
 
 
   }
-  async updateProduct(userId: number, newProduct: UpdateProductDTO): Promise<Product | undefined> {
+
+  async updateProduct(userId: number, newProduct: UpdateProductDTO): Promise<ResponseProductDTO | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId
@@ -94,6 +96,36 @@ export class ProductService {
     return await this.productRepo.save(p);
   }
 
+  async getProducts(userId : number) : Promise<ResponseProductDTO[] | undefined> {
+    const user = await this.userService.findOne({
+      where :{
+        id : userId
+      }
+    });
+    if(!user){
+      throw new UnauthorizedException();
+    }
+    return await this.productRepo.find();
+  }
 
+  async findProductByBarCode(userId : number , obj : BarCodeQueryDto) : Promise<ResponseProductDTO | undefined> {
+    const user = await this.userService.findOne({
+      where :{
+        id : userId
+      }
+    });
+    if(!user){
+      throw new UnauthorizedException();
+    }
+    const product = await this.productRepo.findOne({
+      where:{
+        barCode : obj.barCode
+      }
+    });
+    if(!product){
+      throw new NotFoundException('Product was not found!');
+    }
+    return product;
+  }
 
 }
