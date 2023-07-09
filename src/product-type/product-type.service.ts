@@ -13,6 +13,7 @@ import { ProductType } from "./product-type.entity";
 @Injectable()
 export class ProductTypeService {
 
+
   constructor(@InjectRepository(ProductType)
   private readonly productTypeRepo: Repository<ProductType>, @Inject(ConfigService) private readonly config: ConfigService,
     @Inject(UserService) private readonly userService: UserService) { }
@@ -26,7 +27,7 @@ export class ProductTypeService {
     return await this.productTypeRepo.save(data);
   }
 
-  async createProductType(userId: number, newProductType: CreateProductTypeDTO): Promise<ResponseProductTypeDTO | undefined> {
+  async createProductType(userId: number, newProductType: CreateProductTypeDTO): Promise<ProductType | undefined> {
     const user = await this.userService.findOne({
       where: {
         id: userId
@@ -51,7 +52,7 @@ export class ProductTypeService {
     return await this.productTypeRepo.save(p);
   }
 
-  async updateProductType(userId: number, newProductType: UpdateProductTypeDTO): Promise<ResponseProductTypeDTO | undefined> {
+  async updateProductType(userId: number, newProductType: UpdateProductTypeDTO): Promise<ProductType | undefined> {
     const user = await this.userService.findOne({
       where: {
         id: userId
@@ -65,7 +66,7 @@ export class ProductTypeService {
         name : newProductType.name
       }
     });
-    if(d){
+    if(d && newProductType.id !== d.id){
       throw new ConflictException('Already Found Product type with same name');
     }
     const productType = await this.checkIfProductTypeExist(newProductType.id);
@@ -92,6 +93,19 @@ export class ProductTypeService {
       return undefined;
     }
     return p;
+  }
+
+  async getAllProductTypes(userId: any): Promise <ProductType[] | undefined> {
+    const user = await this.userService.findOne({
+      where: {
+        id: userId
+      }
+    });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    const p = await this.productTypeRepo.find();
+    return p || [];
   }
 
 }

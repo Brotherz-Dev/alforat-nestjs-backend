@@ -27,7 +27,7 @@ export class ProductService {
     return await this.productRepo.save(data);
   }
 
-  async createProduct(userId: number, newProduct: CreateProductDTO) : Promise<ResponseProductDTO | undefined> {
+  async createProduct(userId: number, newProduct: CreateProductDTO) : Promise<Product | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId
@@ -36,7 +36,7 @@ export class ProductService {
     if(!user){
       throw new UnauthorizedException();
     }
-    const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType.id);
+    const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType_id);
     if(!productType){
       throw new NotFoundException('ProductType was not found');
     }
@@ -65,7 +65,7 @@ export class ProductService {
 
   }
 
-  async updateProduct(userId: number, newProduct: UpdateProductDTO): Promise<ResponseProductDTO | undefined> {
+  async updateProduct(userId: number, newProduct: UpdateProductDTO): Promise<Product | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId
@@ -74,7 +74,7 @@ export class ProductService {
     if(!user){
       throw new UnauthorizedException();
     }
-    const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType.id);
+    const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType_id);
     if(!productType){
       throw new NotFoundException('ProductType was not found');
     }
@@ -85,6 +85,14 @@ export class ProductService {
     });
     if(!p){
       throw new BadRequestException('Product was not found!');
+    }
+    const checkIfProductWithBarCodeExists = await this.findOne({
+      where:{
+        barCode : newProduct.barCode
+      }
+    });
+    if(checkIfProductWithBarCodeExists && checkIfProductWithBarCodeExists.id !== p.id){
+      throw new ConflictException('Product with Same barCode was Found');
     }
     p.barCode = newProduct.barCode;
     p.buyingPrice = newProduct.buyingPrice;
@@ -98,7 +106,7 @@ export class ProductService {
     return await this.productRepo.save(p);
   }
 
-  async getProducts(userId : number) : Promise<ResponseProductDTO[] | undefined> {
+  async getProducts(userId : number) : Promise<Product[] | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId
@@ -107,10 +115,14 @@ export class ProductService {
     if(!user){
       throw new UnauthorizedException();
     }
-    return await this.productRepo.find();
+    return await this.productRepo.find({
+      relations :{
+        productType:true
+      }
+    });
   }
 
-  async findProductByBarCode(userId : number , obj : BarCodeQueryDto) : Promise<ResponseProductDTO | undefined> {
+  async findProductByBarCode(userId : number , obj : BarCodeQueryDto) : Promise<Product | undefined> {
     const user = await this.userService.findOne({
       where :{
         id : userId

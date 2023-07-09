@@ -24,8 +24,7 @@ export class UpdateProductDTO {
     readonly name: string;
 
     @IsNotEmpty()
-    @Type(() => ResponseProductTypeDTO)
-    readonly productType : ResponseProductTypeDTO;
+    readonly productType_id : number;
 
     @Type(() => Number) 
     @IsNotEmpty({ "message": "Buying Price field cannot be empty" })

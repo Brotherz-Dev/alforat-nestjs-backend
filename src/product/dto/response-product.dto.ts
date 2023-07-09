@@ -14,7 +14,7 @@ export class ResponseProductDTO {
     keywords: string[];
 
     @Type(() => ResponseProductTypeDTO)
-    productType: ResponseProductTypeDTO;
+    productType: ResponseProductTypeDTO[];
 
     @Type(() => Number)
     buyingPrice: number;
