@@ -3,7 +3,7 @@ import { SaleState } from "src/sale-state/sale-state.entity";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, Generated } from "typeorm";
 
 @Entity("sales")
-export class ProductType extends BaseEntity {
+export class Sale extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -15,25 +15,25 @@ export class ProductType extends BaseEntity {
         nullable: true,
         default: null
     })
-    public customer_name: string;
+    public customerName: string;
 
     @Column({
         nullable: true,
         default: null
     })
-    public customer_phoneNumber: string;
+    public customerPhoneNumber: string;
 
     @Column({
         nullable: true,
         default: null
     })
-    public customer_id: string;
+    public customerId: string;
 
     @Column({
         nullable: true,
         default: null
     })
-    public customer_city: string;
+    public customerCity: string;
 
     @Column({
         nullable: true,

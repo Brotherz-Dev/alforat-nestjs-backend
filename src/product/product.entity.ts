@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 import { ProductType } from "src/product-type/product-type.entity";
-import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne, ManyToOne } from "typeorm";
 
 @Entity("products")
 export class Product extends BaseEntity {
@@ -17,7 +17,7 @@ export class Product extends BaseEntity {
     })
     public name: string;
 
-    @OneToOne(() => ProductType, (productType) => productType.id)
+    @ManyToOne(() => ProductType, (productType) => productType.id)
     @JoinTable()
     public productType: ProductType;
 

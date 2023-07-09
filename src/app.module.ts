@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { getEnvPath } from './common/helper/env.helper';
 import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
+import { SaleStateModule } from './sale-state/sale-state.module';
+import { SaleModule } from './sale/sale.module';
 import { TypeOrmConfigService } from './typeorm/typeorm.service';
 import { UserModule } from './user/user.module';
 
@@ -29,7 +31,9 @@ const envFilePath: string = getEnvPath(`${__dirname}`);
     UserModule,
     AuthModule,
     ProductTypeModule,
-    ProductModule
+    SaleStateModule,
+    ProductModule,
+    SaleModule
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_INTERCEPTOR, useClass: AuthInterceptor }, {provide: APP_GUARD, useClass: ThrottlerGuard }],

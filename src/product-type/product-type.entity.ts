@@ -1,8 +1,7 @@
 
-import { Exclude } from "class-transformer";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from "typeorm";
 
-@Entity("product-types")
+@Entity("product_types")
 export class ProductType extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;

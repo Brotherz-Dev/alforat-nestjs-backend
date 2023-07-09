@@ -6,9 +6,17 @@ import { ResponseProductDTO } from "src/product/dto/response-product.dto";
 export class CreateSaleStateDTO {
 
 
+    @IsOptional()
+    @Type(() => Number)
+    readonly productId : number;
+
+    @Type(() => Number)
     @IsNotEmpty()
-    @Type(() => ResponseProductDTO)
-    readonly product : ResponseProductDTO;
+    readonly price : number
+
+    @Type(() => String)
+    @IsOptional()
+    readonly productName : string;
 
 
     @IsNotEmpty()

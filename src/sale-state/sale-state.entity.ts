@@ -1,24 +1,18 @@
 
 import { Product } from "src/product/product.entity";
-import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne, ManyToOne } from "typeorm";
 
-@Entity("sale-states")
+@Entity("sale_states")
 export class SaleState extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column({
-        nullable: true
-    })
-    @OneToOne(() => Product, (product) => product.id)
-    @JoinTable()
-    public product: Product;
-
 
     @Column({
-        nullable: true, default: 0
+        nullable: true,
+        default: null
     })
-    public buyingPrice: number;
+    public productId: number;
 
     @Column({
         default: 1
@@ -32,9 +26,9 @@ export class SaleState extends BaseEntity {
 
     @Column({
         nullable: true,
-        default : null
+        default: null
     })
-    public extraData: string;
+    public productName: string;
 
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })

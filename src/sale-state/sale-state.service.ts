@@ -2,7 +2,6 @@ import { Injectable, Inject, UnauthorizedException, ConflictException, NotFoundE
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Product } from "src/product/product.entity";
-import { UserService } from "src/user/user.service";
 import { Repository } from "typeorm";
 import { CreateSaleStateDTO } from "./dto/sale-state.dto";
 import { SaleState } from "./sale-state.entity";
@@ -12,31 +11,31 @@ import { SaleState } from "./sale-state.entity";
 export class SaleStateService {
 
   constructor(@InjectRepository(SaleState)
-  private readonly productTypeRepo: Repository<SaleState> , @InjectRepository(Product)
-  private readonly productRepo: Repository<Product>) { }
+  private readonly saleStateRepo: Repository<SaleState>) { }
 
 
   async findOne(data: number | any): Promise<SaleState | undefined> {
-    return await this.productTypeRepo.findOne(data);
+    return await this.saleStateRepo.findOne(data);
   }
 
-  async update(data: Product): Promise<SaleState | undefined> {
-    return await this.productTypeRepo.save(data);
+  async update(data: SaleState): Promise<SaleState | undefined> {
+    return await this.saleStateRepo.save(data);
   }
 
   async create(obj : CreateSaleStateDTO) : Promise <SaleState | undefined>{
-    const product = await this.productRepo.findOne({
-        where : {
-            id : obj.product.id
-        }
-    });
-    // if(!product){
-
-    // }
     const saleState = new SaleState();
-
-    return null;
-    
+    if(obj.productId){
+      saleState.productId = obj.productId;
+      saleState.quantity = obj.quantity;
+      saleState.sellingPrice = obj.price;
+      saleState.productName = obj.productName;
+    }
+    else{
+      saleState.quantity = obj.quantity;
+      saleState.sellingPrice = obj.price;
+      saleState.productName = obj.productName;
+    }
+    return await this.saleStateRepo.save(saleState);
   }
 
 
