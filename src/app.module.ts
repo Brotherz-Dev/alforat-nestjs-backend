@@ -25,7 +25,6 @@ const envFilePath: string = getEnvPath(`${__dirname}`);
       envFilePath:'.env',
       isGlobal:true
     }),
-    ThrottlerModule.forRoot({ ttl: 1, limit: 120 }),
     ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService } ),
     UserModule,
@@ -36,6 +35,6 @@ const envFilePath: string = getEnvPath(`${__dirname}`);
     SaleModule
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: AuthInterceptor }, {provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: AuthInterceptor }],
 })
 export class AppModule { }

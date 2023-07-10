@@ -5,6 +5,7 @@ import { Product } from "src/product/product.entity";
 import { UserService } from "src/user/user.service";
 import { Repository } from "typeorm";
 import { CreateProductTypeDTO } from "./dto/create-product-type.dto";
+import { ProductTypeQueryDto } from "./dto/query-product.dto";
 import { ResponseProductTypeDTO } from "./dto/response-product-type.dto";
 import { UpdateProductTypeDTO } from "./dto/update-product-type.dto";
 import { ProductType } from "./product-type.entity";
@@ -12,8 +13,6 @@ import { ProductType } from "./product-type.entity";
 
 @Injectable()
 export class ProductTypeService {
-
-
   constructor(@InjectRepository(ProductType)
   private readonly productTypeRepo: Repository<ProductType>, @Inject(ConfigService) private readonly config: ConfigService,
     @Inject(UserService) private readonly userService: UserService) { }
@@ -62,18 +61,18 @@ export class ProductTypeService {
       throw new UnauthorizedException();
     }
     const d = await this.findOne({
-      where:{
-        name : newProductType.name
+      where: {
+        name: newProductType.name
       }
     });
-    if(d && newProductType.id !== d.id){
+    if (d && newProductType.id !== d.id) {
       throw new ConflictException('Already Found Product type with same name');
     }
     const productType = await this.checkIfProductTypeExist(newProductType.id);
     if (!productType) {
       throw new NotFoundException('Product type not found');
     }
-    
+
     productType.name = newProductType.name;
     productType.description = newProductType.description;
     productType.lastUpdatedBy = user.username;
@@ -95,7 +94,7 @@ export class ProductTypeService {
     return p;
   }
 
-  async getAllProductTypes(userId: any): Promise <ProductType[] | undefined> {
+  async getAllProductTypes(userId: any): Promise<ProductType[] | undefined> {
     const user = await this.userService.findOne({
       where: {
         id: userId
@@ -106,6 +105,27 @@ export class ProductTypeService {
     }
     const p = await this.productTypeRepo.find();
     return p || [];
+  }
+
+  async findProductTypeByName(userId: any, obj: ProductTypeQueryDto): Promise<ProductType | undefined> {
+    const user = await this.userService.findOne({
+      where: {
+        id: userId
+      }
+    });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    console.log(obj);
+    const d = await this.findOne({
+      where: {
+        name: obj.name
+      }
+    });
+    if(!d){
+      throw new NotFoundException();
+    }
+    return d;
   }
 
 }

@@ -40,5 +40,4 @@ export class ProductController {
       return this.productService.findProductByBarCode(req.user.userId , obj );
     }
 
-
 }

@@ -10,20 +10,14 @@ export class CreateProductDTO {
     @Trim()
     readonly barCode: string;
 
-    @IsArray()
-    @IsString({ each: true })
-    @IsOptional()
-    readonly keywords: string[];
+    @IsNotEmpty()
+    readonly productType_id : number;
 
-
-    
     @IsNotEmpty({ "message": "Name field cannot be empty" })
     @Trim()
     readonly name: string;
 
-    @IsNotEmpty()
-    readonly productType_id : number;
-
+    
     @Type(() => Number) 
     @IsNotEmpty({ "message": "Buying Price field cannot be empty" })
     readonly buyingPrice : number;
@@ -31,6 +25,12 @@ export class CreateProductDTO {
     @Type(() => Number) 
     @IsNotEmpty({ "message": "Selling Price field cannot be empty" })
     readonly sellingPrice : number;
+
+
+    @IsArray()
+    @IsString({ each: true })
+    @IsOptional()
+    readonly keywords: string[];
 
     @IsOptional()
     @Type(() => Number) 

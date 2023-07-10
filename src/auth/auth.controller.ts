@@ -10,7 +10,6 @@ import { AuthLogin } from './dto/login.dto';
 import { ForgotPasswordUserDto } from 'src/user/dto/forgot-password.dto';
 
 @Controller('auth')
-@UseGuards(ThrottlerGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
     constructor(private readonly authService: AuthService) { }

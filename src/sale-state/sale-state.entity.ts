@@ -1,4 +1,5 @@
 
+import { Exclude } from "class-transformer";
 import { Product } from "src/product/product.entity";
 import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, OneToOne, ManyToOne } from "typeorm";
 
@@ -30,10 +31,11 @@ export class SaleState extends BaseEntity {
     })
     public productName: string;
 
-
+    @Exclude()
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     public created_at: Date;
 
+    @Exclude()
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     public updated_at: Date;
 
