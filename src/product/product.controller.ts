@@ -35,7 +35,7 @@ export class ProductController {
       return this.productService.getProducts(req.user.userId );
     }
 
-    @Patch('search')
+    @Get('search')
     async findProductByQuery(@Req() req , @Query() obj : BarCodeQueryDto): Promise<Product | undefined> {
       return this.productService.findProductByBarCode(req.user.userId , obj );
     }

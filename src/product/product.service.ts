@@ -15,8 +15,8 @@ import { Product } from "./product.entity";
 export class ProductService {
 
   constructor(@InjectRepository(Product)
-  private readonly productRepo: Repository<Product>, @Inject(ConfigService) private readonly config: ConfigService ,
-  @Inject(UserService) private readonly userService: UserService , @Inject(ProductTypeService) private readonly productTypeService: ProductTypeService) { }
+  private readonly productRepo: Repository<Product>, @Inject(ConfigService) private readonly config: ConfigService,
+    @Inject(UserService) private readonly userService: UserService, @Inject(ProductTypeService) private readonly productTypeService: ProductTypeService) { }
 
 
   async findOne(data: number | any): Promise<Product | undefined> {
@@ -27,25 +27,25 @@ export class ProductService {
     return await this.productRepo.save(data);
   }
 
-  async createProduct(userId: number, newProduct: CreateProductDTO) : Promise<Product | undefined> {
+  async createProduct(userId: number, newProduct: CreateProductDTO): Promise<Product | undefined> {
     const user = await this.userService.findOne({
-      where :{
-        id : userId
+      where: {
+        id: userId
       }
     });
-    if(!user){
+    if (!user) {
       throw new UnauthorizedException();
     }
     const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType_id);
-    if(!productType){
+    if (!productType) {
       throw new NotFoundException('ProductType was not found');
     }
     const checkIfProductWithBarCodeExists = await this.findOne({
-      where:{
-        barCode : newProduct.barCode
+      where: {
+        barCode: newProduct.barCode
       }
     });
-    if(checkIfProductWithBarCodeExists){
+    if (checkIfProductWithBarCodeExists) {
       throw new ConflictException('Product with Same barCode was Found');
     }
     const p = new Product();
@@ -67,31 +67,31 @@ export class ProductService {
 
   async updateProduct(userId: number, newProduct: UpdateProductDTO): Promise<Product | undefined> {
     const user = await this.userService.findOne({
-      where :{
-        id : userId
+      where: {
+        id: userId
       }
     });
-    if(!user){
+    if (!user) {
       throw new UnauthorizedException();
     }
     const productType = await this.productTypeService.checkIfProductTypeExist(newProduct.productType_id);
-    if(!productType){
+    if (!productType) {
       throw new NotFoundException('ProductType was not found');
     }
     const p = await this.findOne({
-      where :{
-        id : newProduct.id
+      where: {
+        id: newProduct.id
       }
     });
-    if(!p){
+    if (!p) {
       throw new BadRequestException('Product was not found!');
     }
     const checkIfProductWithBarCodeExists = await this.findOne({
-      where:{
-        barCode : newProduct.barCode
+      where: {
+        barCode: newProduct.barCode
       }
     });
-    if(checkIfProductWithBarCodeExists && checkIfProductWithBarCodeExists.id !== p.id){
+    if (checkIfProductWithBarCodeExists && checkIfProductWithBarCodeExists.id !== p.id) {
       throw new ConflictException('Product with Same barCode was Found');
     }
     p.barCode = newProduct.barCode;
@@ -106,37 +106,40 @@ export class ProductService {
     return await this.productRepo.save(p);
   }
 
-  async getProducts(userId : number) : Promise<Product[] | undefined> {
+  async getProducts(userId: number): Promise<Product[] | undefined> {
     const user = await this.userService.findOne({
-      where :{
-        id : userId
+      where: {
+        id: userId
       }
     });
-    if(!user){
+    if (!user) {
       throw new UnauthorizedException();
     }
     return await this.productRepo.find({
-      relations :{
-        productType:true
+      relations: {
+        productType: true
       }
     });
   }
 
-  async findProductByBarCode(userId : number , obj : BarCodeQueryDto) : Promise<Product | undefined> {
+  async findProductByBarCode(userId: number, obj: BarCodeQueryDto): Promise<Product | undefined> {
     const user = await this.userService.findOne({
-      where :{
-        id : userId
+      where: {
+        id: userId
       }
     });
-    if(!user){
+    if (!user) {
       throw new UnauthorizedException();
     }
+    console.log(obj);
     const product = await this.productRepo.findOne({
-      where:{
-        barCode : obj.barCode
+      relations: {
+        productType: true
+      }, where: {
+        barCode: obj.barCode
       }
     });
-    if(!product){
+    if (!product) {
       throw new NotFoundException('Product was not found!');
     }
     return product;

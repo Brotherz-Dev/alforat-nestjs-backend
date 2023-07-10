@@ -65,7 +65,7 @@ export class Product extends BaseEntity {
     })
     public lastUpdatedBy: string;
 
-    @Column({ type: 'simple-array', nullable: true, array: true })
+    @Column({ type: 'simple-array', nullable: true})
     public keywords: string[];
 
     @Exclude()
