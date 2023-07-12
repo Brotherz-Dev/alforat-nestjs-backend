@@ -72,7 +72,6 @@ export class SaleService {
         id : id
       },
     });
-    console.log(sale);
     if(!sale){
       throw new NotFoundException('Sale Not Found!');
     }
