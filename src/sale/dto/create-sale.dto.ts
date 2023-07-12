@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsOptional, IsNotEmpty, IsArray } from "class-validator";
+import { IsOptional, IsNotEmpty, IsArray, ValidateNested } from "class-validator";
 import { CreateSaleStateDTO } from "src/sale-state/dto/sale-state.dto";
 
 export class CreateSaleDTO {
@@ -27,6 +27,7 @@ export class CreateSaleDTO {
 
     @IsNotEmpty()
     @IsArray()
+    @ValidateNested({ each: true })
     @Type(() => CreateSaleStateDTO)
     readonly saleStates : CreateSaleStateDTO[];
 

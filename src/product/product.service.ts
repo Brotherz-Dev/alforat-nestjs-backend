@@ -131,7 +131,6 @@ export class ProductService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    console.log(obj);
     const product = await this.productRepo.findOne({
       relations: {
         productType: true

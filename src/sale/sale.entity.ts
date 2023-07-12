@@ -1,6 +1,6 @@
 
 import { SaleState } from "src/sale-state/sale-state.entity";
-import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, Generated } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinTable, Generated, JoinColumn } from "typeorm";
 
 @Entity("sales")
 export class Sale extends BaseEntity {
@@ -41,8 +41,7 @@ export class Sale extends BaseEntity {
     })
     public description: string;
 
-    @OneToMany(() => SaleState, (saleState) => saleState.id)
-    @JoinTable()
+    @OneToMany(() => SaleState, (saleState) => saleState.sale)
     public saleStates: SaleState[];
 
 

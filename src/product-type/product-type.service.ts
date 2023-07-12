@@ -116,7 +116,6 @@ export class ProductTypeService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    console.log(obj);
     const d = await this.findOne({
       where: {
         name: obj.name
