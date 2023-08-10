@@ -13,7 +13,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.use(cookieParser());
-  await app.listen(port, () => {
+  await app.listen(port,'0.0.0.0', () => {
     console.log('[WEB]', `http://localhost:${port}`);
   });
 }
