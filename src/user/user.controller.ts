@@ -5,7 +5,7 @@ import { ResponseUserDto } from "./dto/response-user.dto";
 import { UpdateUserPasswordDto } from "./dto/update-password.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserRole } from "./role.enum";
-import { RolesGuard } from "./user-guards/Roles.guard";
+import { RolesGuard } from "./user-guards/roles.guard";
 import { UserService } from "./user.service";
 
 

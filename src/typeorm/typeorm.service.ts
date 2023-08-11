@@ -18,10 +18,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       entities: ['dist/**/*.entity.{ts,js}'],
       migrations: ['dist/migrations/*.{ts,js}'],
       migrationsTableName: 'typeorm_migrations',
-      logging: true,
-      logger: 'file',
       //maxQueryExecutionTime: 1000,
-      synchronize: true, // never use TRUE in production!
+      synchronize: false, // never use TRUE in production!
     };
   }
 }
