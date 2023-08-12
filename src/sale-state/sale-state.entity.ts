@@ -17,6 +17,12 @@ export class SaleState extends BaseEntity {
     public productId: number;
 
     @Column({
+        nullable: true,
+        default: null
+    })
+    public productBarCode: string;
+
+    @Column({
         default: 1
     })
     public quantity: number;

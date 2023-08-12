@@ -10,6 +10,10 @@ export class CreateSaleStateDTO {
     @Type(() => Number)
     readonly productId : number;
 
+    @IsOptional()
+    @Type(() => String)
+    readonly productBarCode : string;
+
     @Type(() => Number)
     @IsNotEmpty()
     readonly price : number

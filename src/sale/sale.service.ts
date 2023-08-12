@@ -1,11 +1,13 @@
-import { Injectable, Inject, UnauthorizedException, ConflictException, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, Inject, UnauthorizedException, ConflictException, NotFoundException, InternalServerErrorException, Res } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
+import { JSReportService } from "src/jsreport/jsreport.service";
 import { Product } from "src/product/product.entity";
+import { ProductService } from "src/product/product.service";
 import { SaleState } from "src/sale-state/sale-state.entity";
 import { SaleStateService } from "src/sale-state/sale-state.service";
 import { UserService } from "src/user/user.service";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { CreateSaleDTO } from "./dto/create-sale.dto";
 import { Sale } from "./sale.entity";
 
@@ -14,8 +16,10 @@ import { Sale } from "./sale.entity";
 export class SaleService {
 
   constructor(@InjectRepository(Sale)
-  private readonly saleRepo: Repository<Sale>, @Inject(UserService) private readonly userService: UserService,
-    @Inject(SaleStateService) private readonly saleStateService: SaleStateService) { }
+  private readonly saleRepo: Repository<Sale>, @Inject(UserService) private readonly userService: UserService, @Inject(ProductService) private readonly productService: ProductService,
+    @Inject(SaleStateService) private readonly saleStateService: SaleStateService , @Inject(JSReportService) private readonly jsReport : JSReportService) {
+      
+     }
 
 
   async findOne(data: number | any): Promise<Sale | undefined> {
@@ -35,6 +39,7 @@ export class SaleService {
     if (!user) {
       throw new UnauthorizedException();
     }
+    console.log(obj);
     const sale = new Sale();
     var saleStatesArray = [] as SaleState[];
     sale.createdBy = user.username;
@@ -47,13 +52,14 @@ export class SaleService {
       throw new InternalServerErrorException();
     }
     obj.saleStates.forEach(async (saleState) => {
-      const st = await this.saleStateService.create(saleState, newSale);
-      if (st) {
-        saleStatesArray.push(st);
-      }
+      await this.saleStateService.create(saleState, newSale).then((res) => {
+        if (res) {
+          saleStatesArray.push(res);
+        }
+      });
     });
-    sale.saleStates = saleStatesArray;
-    return newSale
+    newSale.saleStates = saleStatesArray;
+    return newSale;
   }
   async getSaleById(userId: any, id: any): Promise <Sale | undefined> {
     const user = await this.userService.findOne({
@@ -75,8 +81,12 @@ export class SaleService {
     if(!sale){
       throw new NotFoundException('Sale Not Found!');
     }
+    console.log(sale);
     return sale;
   }
+
+
+  
 
 
 

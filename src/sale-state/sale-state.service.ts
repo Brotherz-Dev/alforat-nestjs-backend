@@ -26,6 +26,7 @@ export class SaleStateService {
   async create(obj : CreateSaleStateDTO , sale :Sale) : Promise <SaleState | undefined>{
     const saleState = new SaleState();
     if(obj.productId){
+      saleState.productBarCode = obj.productBarCode ; 
       saleState.productId = obj.productId;
       saleState.quantity = obj.quantity;
       saleState.sellingPrice = obj.price;

@@ -1,4 +1,4 @@
-import { Controller, UseGuards, UseInterceptors, ClassSerializerInterceptor, Inject, Req, Body, Post, Param, Get } from "@nestjs/common";
+import { Controller, UseGuards, UseInterceptors, ClassSerializerInterceptor, Inject, Req, Body, Post, Param, Get, Res } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { CreateSaleDTO } from "./dto/create-sale.dto";
 import { Sale } from "./sale.entity";

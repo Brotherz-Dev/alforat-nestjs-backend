@@ -19,7 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       migrations: ['dist/migrations/*.{ts,js}'],
       migrationsTableName: 'typeorm_migrations',
       //maxQueryExecutionTime: 1000,
-      synchronize: false, // never use TRUE in production!
+      synchronize: true, // never use TRUE in production!
     };
   }
 }
