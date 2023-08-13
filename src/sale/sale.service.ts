@@ -39,7 +39,6 @@ export class SaleService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    console.log(obj);
     const sale = new Sale();
     var saleStatesArray = [] as SaleState[];
     sale.createdBy = user.username;
@@ -81,7 +80,6 @@ export class SaleService {
     if(!sale){
       throw new NotFoundException('Sale Not Found!');
     }
-    console.log(sale);
     return sale;
   }
 
